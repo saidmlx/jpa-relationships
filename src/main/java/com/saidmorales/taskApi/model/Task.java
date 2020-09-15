@@ -4,10 +4,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "TASKS")
-public class Tasks {
+public class Task {
 	
 	@Id
 	@Column(name="ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@Column(name="DESCRIPTION")
