@@ -17,10 +17,15 @@ __TASKS__
 |NAME|VARCHAR(255)|
 
 
-## GET
+## API
+### Tasks
 
-Get all tasks
+GET http://localhost:8080/tasks/
 
-http://localhost:8080/tasks/
+GET http://localhost:8080/task/{id}
 
-http://localhost:8080/tasks/{id}
+POST http://localhost:8080/task/
+
+DELETE http://localhost:8080/task/2
+
+PATCH http://localhost:8080/task/1

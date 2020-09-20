@@ -2,7 +2,6 @@ package com.saidmorales.taskApi.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,12 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.saidmorales.taskApi.model.Task;
 import com.saidmorales.taskApi.services.TasksService;
+
 
 
 
@@ -29,12 +28,12 @@ public class TaskController {
 		this.tasksService = tasksService;
 	}
 	
-	@GetMapping( "/tasks" )
+	@GetMapping( "/tasks/v1" )
 	public ResponseEntity< List<Task>> getTasks() {
 		return new ResponseEntity<>( tasksService.getAllTasks(), HttpStatus.OK );
 	}
 	
-	@GetMapping( "/task/{id}" )
+	@GetMapping( "/task/v1/{id}" )
 	public ResponseEntity< Task> getTasks(@PathVariable("id") Long id  ) {
 		Task task = tasksService.findById(id);
 		if(task != null) {
@@ -44,7 +43,7 @@ public class TaskController {
 		}
 	}
 	
-	@PostMapping( "/task"  )
+	@PostMapping( "/task/v1"  )
 	public ResponseEntity< Task> getTasks(@RequestBody Task task) {
 		Task taskSaved = tasksService.save(task);
 		if(taskSaved != null) {
@@ -54,7 +53,7 @@ public class TaskController {
 		}
 	}
 	
-	@PatchMapping( "/task/{id}"  )
+	@PatchMapping( "/task/v1/{id}"  )
 	public ResponseEntity< Task> getTasks(@PathVariable("id") Long id, @RequestBody Task task) {
 		Task taskSaved = tasksService.findById(id);
 		if(taskSaved != null) {
@@ -69,7 +68,7 @@ public class TaskController {
 		}
 	}
 	
-	@DeleteMapping( "/task/{id}"  )
+	@DeleteMapping( "/task/v1/{id}"  )
 	public ResponseEntity<Task> deleteTask(@PathVariable("id") Long id) {
 		Task taskSaved = tasksService.findById(id);
 		if(taskSaved != null) {
