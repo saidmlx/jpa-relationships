@@ -1,31 +1,105 @@
-
-# Task API
-
-## features
-
-1. Spring boot 2.3.3.RELEAS
-1. Spring JPA
-1. Gradle
-
-## Database
-
-__TASKS__
-
-|NAME|TYPE        |
-|:---|:-----------|
-|ID  |BIGINT      |
-|NAME|VARCHAR(255)|
+---
+layout: post
+title: JPA relationship
+date: 2020-09-20 12:00:00 
+categories: Java JPA
+tags: Java JPA Gradle
+---
 
 
-## API
-### Tasks
+Como implementar una relación muchos a muchos con JPA
 
-GET http://localhost:8080/tasks/
 
-GET http://localhost:8080/task/{id}
+![Database model many to many @saidmlx]({{ site.url }}/assets/images/2020-09-20-jpa-relationships/database-one-to-one.PNG)
 
-POST http://localhost:8080/task/
+Aquí el script de base de datos que utilice escrito en H2
 
-DELETE http://localhost:8080/task/2
+```sql
+DROP TABLE IF  EXISTS USERS_TASKS;
+DROP TABLE IF  EXISTS TASKS;
+DROP TABLE IF  EXISTS USERS; 
 
-PATCH http://localhost:8080/task/1
+
+CREATE TABLE USERS(ID bigint auto_increment, NAME VARCHAR(255) null);
+INSERT INTO USERS (NAME) VALUES ('Melissa');
+INSERT INTO USERS (NAME) VALUES ('Fernando');
+ 
+CREATE TABLE TASKS(ID bigint auto_increment, DESCRIPTION VARCHAR(255) null, PRIORITY bigint null);
+INSERT INTO TASKS (DESCRIPTION, PRIORITY) VALUES ('Wake up',1);
+INSERT INTO TASKS (DESCRIPTION, PRIORITY) VALUES ('Take a shower',2);
+
+
+CREATE TABLE USERS_TASKS(ID_USER bigint null, ID_TASK bigint null );
+INSERT INTO USERS_TASKS (ID_USER,ID_TASK) VALUES (1,1);
+INSERT INTO USERS_TASKS (ID_USER,ID_TASK) VALUES (2,1);
+```
+
+Modelo de __*User*__
+```java
+@Entity
+@Table(name="USERS")
+public class User {
+
+	@Id
+	@Column(name = "ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name = "NAME")
+	private String name;
+	
+	/* aqui van los geters and seters*/
+}
+
+```
+
+Modelo de __*Task*__
+```java
+@Entity
+@Table(name = "TASKS")
+public class Task  implements Serializable{
+	
+	@Id
+	@Column(name="ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
+	@Column(name="DESCRIPTION")
+	private String description;
+	
+	@Column(name="PRIORITY")
+	private long priority;
+	
+	/* aqui van los geters and seters*/
+}
+
+```
+
+Ahora para agregar la relación hay que modificar las dos clases. 
+
+Para __*User*__ agregamos lo siguiente.
+
+```java
+    @ManyToMany(mappedBy = "users")
+	Set<Task> tasks= new HashSet<>();
+```	
+Para __*Task*__ agregamos lo siguiente.
+```java
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "USERS_TASKS",
+			joinColumns = @JoinColumn(name = "ID_TASK"),
+			inverseJoinColumns = @JoinColumn(name = "ID_USER")
+			)
+	@JsonIgnore
+	Set<User> users = new HashSet<>();
+```
+
+
+Aqui el resultado 
+
+
+
+
+
+>Si quieres obtener el codigo completo puedes descargarlo desde mi repositorio GITHUB [jpa-relationships rama many-to-many-relationship](https://github.com/saidmlx/jpa-relationships/tree/many-to-many-relationship)
