@@ -1,18 +1,8 @@
----
-layout: post
-title: JPA relationship
-date: 2020-09-20 12:00:00 
-categories: Java JPA
-tags: Java JPA Gradle
----
 
 
-Como implementar una relación muchos a muchos con JPA
+![Database model many to many @saidmlx](https://saidmorales.com/assets/images/2020-09-20-jpa-relationships/database-one-to-one.PNG)
 
-
-![Database model many to many @saidmlx]({{ site.url }}/assets/images/2020-09-20-jpa-relationships/database-one-to-one.PNG)
-
-Aquí el script de base de datos que utilice escrito en H2
+Script de base de datos escrito en H2
 
 ```sql
 DROP TABLE IF  EXISTS USERS_TASKS;
@@ -83,7 +73,9 @@ Para __*User*__ agregamos lo siguiente.
     @ManyToMany(mappedBy = "users")
 	Set<Task> tasks= new HashSet<>();
 ```	
+
 Para __*Task*__ agregamos lo siguiente.
+
 ```java
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(
@@ -99,7 +91,3 @@ Para __*Task*__ agregamos lo siguiente.
 Aqui el resultado 
 
 
-
-
-
->Si quieres obtener el codigo completo puedes descargarlo desde mi repositorio GITHUB [jpa-relationships rama many-to-many-relationship](https://github.com/saidmlx/jpa-relationships/tree/many-to-many-relationship)
