@@ -90,4 +90,7 @@ Para __*Task*__ agregamos lo siguiente.
 
 Aqui el resultado 
 
+![Database model many to many @saidmlx](https://saidmorales.com/assets/images/2020-09-20-jpa-relationships/service-users-one-to-one.PNG)
+
+![Database model many to many @saidmlx](https://saidmorales.com/assets/images/2020-09-20-jpa-relationships/service-task-one-to-one.PNG)
 
